@@ -21,6 +21,8 @@ const Colors = [
 ]
 
 const SHAPE_MAX = 32;
+const SHAPE_RADIUS = 10;
+const SHAPE_FREQ = 2;
 
 let shapeCounter = 0
 let nextShape = 0
@@ -56,7 +58,7 @@ const sketch = (/** @type p5 */ p) => {
   }
 
   p.draw = () => {
-    shapeCounter = (shapeCounter + 1) % 5
+    shapeCounter = (shapeCounter + 1) % SHAPE_FREQ
 
     let mouseDir = p.createVector(p.mouseX - p.pmouseX, p.mouseY - p.pmouseY)
       .normalize()
@@ -91,17 +93,17 @@ const sketch = (/** @type p5 */ p) => {
       switch (s.shape) {
         case "circle":
           p.stroke(s.color[0], s.color[1], s.color[2])
-          p.circle(s.pos.x, s.pos.y, 30)
+          p.circle(s.pos.x, s.pos.y, SHAPE_RADIUS)
           break;
 
         case "square":
           p.stroke(s.color[0], s.color[1], s.color[2])
-          p.square(s.pos.x, s.pos.y, 30)
+          p.square(s.pos.x, s.pos.y, SHAPE_RADIUS)
           break;
 
         case "star":
           p.stroke(s.color[0], s.color[1], s.color[2])
-          star(p, s.pos.x, s.pos.y, 30)
+          star(p, s.pos.x, s.pos.y, SHAPE_RADIUS)
 
         default: break;
       }
