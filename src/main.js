@@ -20,9 +20,9 @@ const Colors = [
   [203, 73, 193],
 ]
 
-const SHAPE_MAX = 32;
-const SHAPE_RADIUS = 10;
-const SHAPE_FREQ = 2;
+const SHAPE_MAX = 64;
+const SHAPE_RADIUS = 16;
+const SHAPE_FREQ = 1;
 
 let shapeCounter = 0
 let nextShape = 0
@@ -40,6 +40,17 @@ function star(/** @type p5 */ p, /** @type number */ x, /** @type number */ y, /
   p.line(rightX, botY, leftX, upperY)
 }
 
+const AnimationType = ["spiral", "mouse"]
+let animation = AnimationType[1]
+
+const Spiral = {
+  cur: new p5.Vector(),
+  prev: new p5.Vector(),
+  offset: new p5.Vector(),
+  speedRadial: 5,
+  speedAngular: 5,
+}
+
 const sketch = (/** @type p5 */ p) => {
   p.setup = () => {
     p.createCanvas(p.windowWidth - 8, p.windowHeight - 8)
@@ -50,34 +61,57 @@ const sketch = (/** @type p5 */ p) => {
         {
           shape: "",
           color: [],
-          dir: new p5.Vector,
-          pos: new p5.Vector,
+          dir: new p5.Vector(),
+          pos: new p5.Vector(),
         }
       )
     }
+
+    Spiral.cur = p.createVector(10, 0)
+    Spiral.prev = p.createVector(10, 0)
+    Spiral.offset = p.createVector(p.windowWidth / 2, p.windowHeight / 2)
   }
 
   p.draw = () => {
+    let px = 0, py = 0, prevx = 0, prevy = 0
+
+    switch (animation) {
+      case "mouse":
+        px = p.mouseX
+        py = p.mouseY
+        prevx = p.pmouseX
+        prevy = p.pmouseY
+        break;
+
+      case "spiral":
+        px = Spiral.cur.x + Spiral.offset.x
+        py = Spiral.cur.y + Spiral.offset.y
+        prevx = Spiral.prev.x + Spiral.offset.x
+        prevy = Spiral.prev.y + Spiral.offset.y
+        break;
+
+      default:
+        break;
+    }
+
     shapeCounter = (shapeCounter + 1) % SHAPE_FREQ
 
-    let mouseDir = p.createVector(p.mouseX - p.pmouseX, p.mouseY - p.pmouseY)
-      .normalize()
+    let direction = p.createVector(px - prevx, py - prevy).normalize()
 
     if (shapeCounter == 0) {
-      const idle = mouseDir.magSq() === 0
+      const idle = direction.magSq() === 0
       if (idle) {
-        mouseDir = p.createVector(p.random(1), p.random(1)).normalize()
+        direction = p.createVector(p.random(1), p.random(1)).normalize()
       }
 
-      const shapeDir = mouseDir.mult(-1).rotate(p.random(-p.PI / 2, p.PI / 2))
+      const shapeDir = direction.mult(-1).rotate(p.random(-p.PI / 2, p.PI / 2))
 
       shapes[nextShape] = {
         shape: p.random(ShapeType),
         color: p.random(Colors),
         dir: shapeDir,
-        pos: p.createVector(p.mouseX, p.mouseY)
+        pos: p.createVector(px, py)
       }
-      console.log(shapes[nextShape])
 
       nextShape = (nextShape + 1) % SHAPE_MAX
     }
@@ -114,6 +148,18 @@ const sketch = (/** @type p5 */ p) => {
     p.noStroke()
     p.textSize(16)
     p.text((1 / p.frameRate() * 1000).toFixed(2) + ' ms/f', 10, 20)
+
+    Spiral.prev = Spiral.cur
+    console.log(Spiral.cur)
+    Spiral.cur = Spiral.cur.mult(1 + Spiral.speedRadial * p.deltaTime * 0.0003)
+    Spiral.cur = Spiral.cur.rotate(Spiral.speedAngular * p.deltaTime * 0.002)
+
+    if (Spiral.cur.x > p.windowWidth / 2) {
+      Spiral.cur = p.createVector(5, 0, 0)
+      Spiral.prev = p.createVector(5, 0, 0)
+    }
+
+    // p.circle(Spiral.cur.x + Spiral.offset.x, Spiral.cur.y + Spiral.offset.y, 10)
   }
 }
 
