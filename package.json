@@ -1,0 +1,25 @@
+{
+  "name": "p5js-template",
+  "version": "1.0.0",
+  "description": "p5.js project with hot reloading",
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "keywords": [
+    "p5.js",
+    "creative-coding"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/p5": "^1.7.7",
+    "vite": "^5.0.0"
+  },
+  "dependencies": {
+    "p5": "^1.7.0"
+  }
+}
