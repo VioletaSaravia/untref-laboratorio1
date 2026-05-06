@@ -55,7 +55,8 @@ const Spiral = {
 
 const sketch = (p: p5) => {
   p.setup = () => {
-    p.createCanvas(p.windowWidth - 8, p.windowHeight - 8)
+    const scrollbarThreshold = 4
+    p.createCanvas(p.windowWidth - scrollbarThreshold, p.windowHeight - scrollbarThreshold)
     p.background(220)
 
     for (let i = 0; i < SHAPE_MAX; i++) {
@@ -127,20 +128,18 @@ const sketch = (p: p5) => {
 
     shapes.forEach(s => {
       s.pos = s.pos.add(s.dir)
+      p.stroke(s.color[0], s.color[1], s.color[2], s.alpha)
 
       switch (s.shape) {
         case "circle":
-          p.stroke(s.color[0], s.color[1], s.color[2], s.alpha)
           p.circle(s.pos.x, s.pos.y, SHAPE_RADIUS)
           break;
 
         case "square":
-          p.stroke(s.color[0], s.color[1], s.color[2], s.alpha)
           p.square(s.pos.x, s.pos.y, SHAPE_RADIUS)
           break;
 
         case "star":
-          p.stroke(s.color[0], s.color[1], s.color[2], s.alpha)
           star(p, s.pos.x, s.pos.y, SHAPE_RADIUS)
 
         default: break;
