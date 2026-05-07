@@ -1,11 +1,11 @@
 import p5 from "p5";
 
-const PINGPONG = false;
+const PONG_MODE = false;
 
 const dirs: p5.Vector[] = [];
 const pos: p5.Vector[] = [];
 const speed: number[] = []
-const N = PINGPONG ? 1 : 100;
+const N = PONG_MODE ? 1 : 100;
 const radius = 20;
 
 const FLOOR_NORMAL: p5.Vector = new p5.Vector(0, -1);
@@ -47,7 +47,7 @@ const sketch = (p: p5) => {
         p.noStroke();
         p.fill(255, 255, 255, 255);
 
-        if (PINGPONG) {
+        if (PONG_MODE) {
             p.rect(20, p1.pos, 30, 80)
             p.rect(p.width - 20 - 30, p2.pos, 30, 80)
 
@@ -69,7 +69,7 @@ const sketch = (p: p5) => {
         }
 
         for (let i = 0; i < N; i++) {
-            if (PINGPONG) {
+            if (PONG_MODE) {
                 if (pos[i].dist(p.createVector(50, p1.pos)) < 50) {
                     dirs[i].reflect(LEFT_NORMAL)
                 }
@@ -93,7 +93,7 @@ const sketch = (p: p5) => {
 
 
             if (pos[i].x > p.width) {
-                if (PINGPONG) {
+                if (PONG_MODE) {
                     pos[i] = p.createVector(p.width / 2, p.height / 2)
                     dirs[i] = p.createVector(p.random(-1, 1), p.random(-0.1, 0.1)).normalize()
                     p1.puntos += 1;
@@ -104,7 +104,7 @@ const sketch = (p: p5) => {
             }
 
             if (pos[i].x < 0) {
-                if (PINGPONG) {
+                if (PONG_MODE) {
                     pos[i] = p.createVector(p.width / 2, p.height / 2)
                     dirs[i] = p.createVector(p.random(-1, 1), p.random(-0.1, 0.1)).normalize()
                     p2.puntos += 2;
@@ -126,7 +126,7 @@ const sketch = (p: p5) => {
 
         }
 
-        if (PINGPONG) {
+        if (PONG_MODE) {
             p.textSize(30)
             p.fill(255)
             p.text(p1.puntos, 20, 50)
