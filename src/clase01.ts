@@ -22,7 +22,7 @@ const Colors = [
 ];
 
 const FRAMERATE = 60;
-const SHAPE_MAX = 256;
+const SHAPE_MAX = 512;
 const SHAPE_RADIUS = 12;
 const SHAPE_FREQ = 60 / FRAMERATE;
 const SHAPE_LIFETIME = SHAPE_MAX * SHAPE_FREQ;
@@ -42,8 +42,8 @@ function star(p: p5, x: number, y: number, r: number) {
   p.line(rightX, botY, leftX, upperY);
 }
 
-const AnimationType = ["spiral", "mouse"];
-let animation = AnimationType[0];
+const AnimationType = ["spiral", "mouse", "center"];
+let animation = AnimationType[2];
 
 const Spiral = {
   cur: new p5.Vector(),
@@ -96,6 +96,12 @@ const sketch = (p: p5) => {
         prevx = Spiral.prev.x + Spiral.offset.x;
         prevy = Spiral.prev.y + Spiral.offset.y;
         break;
+
+      case "center":
+        px = p.width / 2
+        py = p.height / 2
+        prevx = px
+        prevy = py
 
       default:
         break;
