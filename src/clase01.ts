@@ -98,10 +98,10 @@ const sketch = (p: p5) => {
         break;
 
       case "center":
-        px = p.width / 2
-        py = p.height / 2
-        prevx = px
-        prevy = py
+        px = p.width / 2;
+        py = p.height / 2;
+        prevx = px;
+        prevy = py;
 
       default:
         break;
